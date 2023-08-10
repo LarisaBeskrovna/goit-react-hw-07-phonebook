@@ -2,35 +2,43 @@ import css from './addContact.module.css';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
-import { addContacts } from 'redux/contact';
+import { addContacts } from 'redux/operations';
 import { selectContacts } from 'redux/selector';
 
 const AddContact = () => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
   const contacts = useSelector(selectContacts);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const dispatch = useDispatch();
 
   const handleFormChange = e => {
     e.target.name === 'name' && setName(e.target.value);
-    e.target.name === 'number' && setNumber(e.target.value);
+    e.target.name === 'phone' && setPhone(e.target.value);
   };
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    const isExist = contacts.find(
+    const exist = contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
 
-    if (isExist) {
+    if (exist) {
       alert(`${name} is already in contacts`);
       return;
     } else {
-      dispatch(addContacts({ id: nanoid(), name: name, number: number }));
+      dispatch(
+        addContacts({
+          id: nanoid(),
+          name: name,
+          phone: phone,
+          createdAt: new Date(),
+        })
+      );
     }
     setName('');
-    setNumber('');
+    setPhone('');
   };
+
   const idName = nanoid();
   const idNumber = nanoid();
 
@@ -44,9 +52,9 @@ const AddContact = () => {
             type="text"
             name="name"
             value={name}
-            onChange={handleFormChange}
             id={idName}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            onChange={handleFormChange}
+            pattern="^[A-Za-z\u0080-\uFFFF ']+$"
             title="Name may contain only letters, apostrophe, dash and spaces. 
                           For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
@@ -56,12 +64,12 @@ const AddContact = () => {
           <h1 className={css.main_title}>Number</h1>
           <input
             className={css.name_input}
-            type="tel"
-            name="number"
-            value={number}
+            type="text"
+            name="phone"
+            value={phone}
             onChange={handleFormChange}
             id={idNumber}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            pattern="^(\+?[0-9.\(\)\-\s]*)$"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
