@@ -18,7 +18,7 @@ const Contacts = () => {
         <ul className={css.list}>
           {contacts.map(contact => (
             <li className={css.list_item} key={contact.id}>
-              {contact.name}: {contact.phone}
+              {contact.name}: {contact.number}
               <button
                 type="button"
                 className={css.delete_btn}
