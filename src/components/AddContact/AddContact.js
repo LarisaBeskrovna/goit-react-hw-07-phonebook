@@ -1,19 +1,19 @@
 import css from './addContact.module.css';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from 'nanoid';
 import { addContacts } from 'redux/operations';
 import { selectContacts } from 'redux/selector';
+import { useId } from 'react';
 
 const AddContact = () => {
   const contacts = useSelector(selectContacts);
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [number, setNumber] = useState('');
   const dispatch = useDispatch();
 
   const handleFormChange = e => {
     e.target.name === 'name' && setName(e.target.value);
-    e.target.name === 'phone' && setPhone(e.target.value);
+    e.target.name === 'number' && setNumber(e.target.value);
   };
 
   const handleFormSubmit = e => {
@@ -28,19 +28,17 @@ const AddContact = () => {
     } else {
       dispatch(
         addContacts({
-          id: nanoid(),
           name: name,
-          phone: phone,
-          createdAt: new Date(),
+          number: number,
         })
       );
     }
     setName('');
-    setPhone('');
+    setNumber('');
   };
 
-  const idName = nanoid();
-  const idNumber = nanoid();
+  const idName = useId();
+  const idNumber = useId();
 
   return (
     <div className={css.main}>
@@ -65,12 +63,12 @@ const AddContact = () => {
           <input
             className={css.name_input}
             type="text"
-            name="phone"
-            value={phone}
+            name="number"
+            value={number}
             onChange={handleFormChange}
             id={idNumber}
             pattern="^(\+?[0-9.\(\)\-\s]*)$"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            title="number number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
         </label>

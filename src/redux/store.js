@@ -21,8 +21,8 @@ import { contactsReducer } from './contact';
 
 export const store = configureStore({
   reducer: {
-    contactsState: contactsReducer,
-    filterState: filterReducer,
+    contacts: contactsReducer,
+    filter: filterReducer,
   },
 });
 

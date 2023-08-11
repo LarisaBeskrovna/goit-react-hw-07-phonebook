@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectContacts } from '..//../redux/selector';
-import { fetchContacnts, deleteContacts } from '..//../redux/operations';
+import { selectFilteredcontacts } from '..//../redux/selector';
+import { fetchContacts, deleteContacts } from '..//../redux/operations';
 import css from './contacts.module.css';
 import Notification from '../Notification/Notification';
 
 const Contacts = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
+  const contacts = useSelector(selectFilteredcontacts);
 
   useEffect(() => {
-    dispatch(fetchContacnts());
+    dispatch(fetchContacts());
   }, [dispatch]);
   if (contacts.length > 0) {
     return (
